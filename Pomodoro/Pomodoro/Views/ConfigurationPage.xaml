@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Pomodoro.ViewModels"
+             x:Class="Pomodoro.Views.ConfigurationPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource AppBackgroundColor}">
+
+    <ContentPage.BindingContext>
+        <viewmodels:ConfigurationViewModel/>
+    </ContentPage.BindingContext>
+
+    <StackLayout VerticalOptions="Center"
+                 HorizontalOptions="Center">
+        <Label Text="Pomodoro Duration (min)" 
+               FontSize="Medium"
+               HorizontalTextAlignment="Center"/>
+        <Entry  Keyboard="Numeric" 
+                Text="{Binding SelectedPomodoroDurations, Mode=TwoWay}"
+                HorizontalTextAlignment="Center" />
+
+        <Label Text="Break Duration (min)"
+               FontSize="Medium"
+               HorizontalTextAlignment="Center"/>
+        <Entry  Keyboard="Numeric" 
+                Text="{Binding SelectedBreakDurations, Mode=TwoWay}"
+                HorizontalTextAlignment="Center"/>
+
+        <Button Text="{StaticResource IconDone}"
+                Command="{Binding SaveCommand}"
+                HorizontalOptions="Center"
+                Style="{StaticResource iconButtonStyle}">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Scale"
+                                        Value="1"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale"
+                                        Value="0.9"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Button>
+
+    </StackLayout>
+
+</ContentPage>

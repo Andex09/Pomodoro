@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Pomodoro.ViewModels" xmlns:controls="clr-namespace:Pomodoro.Controls" xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Pomodoro.Views.PomodoroPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource AppBackgroundColor}">
+
+    <ContentPage.BindingContext>
+        <viewmodels:PomodoroViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid Padding="24">
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <controls:CircularProgress Progress="{Binding Ellapsed.TotalSeconds}"
+                                   Max="{Binding Duration}" 
+                                   ProgressColor="{StaticResource PrimaryColor}" 
+                                   ProgressBackgroundColor="DarkGray"/>
+
+        <Grid VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Text="{Binding Ellapsed, StringFormat='{}{0:t}'}" 
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="60"/>
+
+            <Button Grid.Row="2"
+                Command="{Binding StartOrPauseCommand}"
+                FontSize="50" 
+                HorizontalOptions="Center"
+                Style="{StaticResource iconButtonStyle}"
+                TextColor="{StaticResource PrimaryColor}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                             Binding="{Binding IsRunning}" Value="True">
+                        <Setter Property="Text" Value="{StaticResource IconPause}"/>
+                    </DataTrigger>
+
+                    <DataTrigger TargetType="Button"
+                             Binding="{Binding IsRunning}" Value="False">
+                        <Setter Property="Text" Value="{StaticResource IconPlay}"/>
+                    </DataTrigger>
+                </Button.Triggers>
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Scale"
+                                        Value="1"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale"
+                                        Value="0.9"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Button>
+
+        </Grid>
+
+        <Label Grid.Row="3"
+               FontSize="Medium"
+               HorizontalTextAlignment="Center">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                             Binding="{Binding IsInBreak}" Value="True">
+                    <Setter Property="Text" Value="{StaticResource LabelBreak}"/>
+                </DataTrigger>
+
+                <DataTrigger TargetType="Label"
+                             Binding="{Binding IsInBreak}" Value="False">
+                    <Setter Property="Text" Value="{StaticResource LabelPomodoro}"/>
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+
+        <Button Grid.Row="4"
+                Text="{StaticResource IconSettings}"
+                Command="{Binding GoToConfigurationCommand}"
+                HorizontalOptions="Center" 
+                Style="{StaticResource iconButtonStyle}"
+                IsEnabled="{Binding IsRunning, Converter={StaticResource InvertedBoolConverter}}">
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Scale"
+                                        Value="1"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale"
+                                        Value="0.9"/>
+                        </VisualState.Setters>
+                    </VisualState>
+
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity"
+                                        Value="0.6"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Button>
+
+    </Grid>
+</ContentPage>
